@@ -1,0 +1,57 @@
+/**
+ * The Portfolio entity.
+ */
+entity Portfolio {
+	/**
+	* The portfolioName attribute.
+	*/
+    portfolioId Long required,
+ 	portfolioName String,  
+    portfolioManager String,
+    description String
+}
+
+
+/**
+ * The Project entity.
+ */
+entity Project {
+	/**
+	* The projectname attribute.
+	*/
+    projectId Long required,
+ 	title String,
+    description String,
+    projectType ProjectType,
+	startDate Instant,
+    endDate Instant
+}
+
+enum ProjectType {
+     RESEARCH, TRIALS
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Portfolio{project(title)} to Project{portfolio(portfolioName) }	
+}
+
+// defining multiple OneToMany relationships with comments
+relationship ManyToOne {
+	Project{user(login)} to User	
+}
+
+paginate Portfolio, Project with infinite-scroll
+// Set pagination options
+paginate Portfolio with pagination
+
+// Use Data Transfert Objects (DTO)
+ dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+filter Portfolio, Project
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
